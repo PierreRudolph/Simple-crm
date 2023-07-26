@@ -44,6 +44,5 @@ export class UserComponent implements OnInit {
       console.log(this.allUsers[i]);
       i++;
     });
-    console.log(this.allUsers)
   }
 }
