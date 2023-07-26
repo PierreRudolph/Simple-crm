@@ -1,5 +1,68 @@
+mat-card-content {
+    padding-left: 0px;
+    padding-right: 0px;
+
+    &:last-child {
+        padding-bottom: 0px;
+
+    }
+}
+
 .add-user-btn {
     position: absolute;
     right: 56px;
     bottom: 56px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    tr {
+        // border-bottom: 1px solid #ffffff62;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+
+
+
+        th {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 400;
+            text-align: start;
+
+            &:first-child {
+                padding-left: 16px;
+            }
+        }
+
+        td {
+            height: 48px;
+
+            &:first-child {
+                padding-left: 16px;
+            }
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &:first-child {
+            cursor: unset;
+
+            &:hover {
+                background-color: unset;
+            }
+        }
+
+        &:last-child {
+            border-bottom: 0px;
+        }
+    }
+
+
+
+
+
 }
