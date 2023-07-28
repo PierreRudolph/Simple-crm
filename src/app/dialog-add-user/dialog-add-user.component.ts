@@ -16,21 +16,15 @@ export class DialogAddUserComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogAddUserComponent>) { }
 
-  async saveUser() {
+  saveUser() {
     this.user.birthDate = this.birthDate.getTime();
     this.loading = true;
     const usersCollection = collection(this.firestore, 'users');
-    await setDoc(doc(usersCollection), this.user.toJSON());
-    
-    this.loading = false;
-    this.dialogRef.close();
-    // setDoc(doc(usersCollection), {
-    //   firstName: this.user.firstName,
-    //   lastName: this.user.lastName,
-    //   birthDate: this.user.birthDate,
-    //   street: this.user.street,
-    //   zipCode: this.user.zipCode,
-    //   city: this.user.city
-    // })    
+    setDoc(doc(usersCollection), this.user.toJSON())
+      .then(() => {
+        this.loading = false;
+        this.dialogRef.close();
+      });
+
   }
 }

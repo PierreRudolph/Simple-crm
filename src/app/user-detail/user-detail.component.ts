@@ -34,16 +34,21 @@ export class UserDetailComponent implements OnInit {
     usersRef.forEach(doc => {
       if (doc.id == this.userId) {
         this.user = new User(doc.data());
+        return;
       }
     });
   }
 
   editUserDetail() {
-    this.dialog.open(DialogEditUserComponent)
+    let dialog = this.dialog.open(DialogEditUserComponent);
+    dialog.componentInstance.user = new User(this.user);
+    dialog.componentInstance.userId = this.userId;
+
   }
 
   editUserAddress() {
-    this.dialog.open(DialogEditAddressComponent)
-
+    let dialog = this.dialog.open(DialogEditAddressComponent);
+    dialog.componentInstance.user = new User(this.user);
+    dialog.componentInstance.userId = this.userId;
   }
 }
