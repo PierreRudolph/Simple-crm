@@ -3,10 +3,10 @@ import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
-import { User } from 'src/models/user.class';
-import { Firestore, collection, collectionData, getDocs } from '@angular/fire/firestore';
+//import { Firestore, collection, getDocs, onSnapshot } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { __param } from 'tslib';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-user',
@@ -16,11 +16,15 @@ import { __param } from 'tslib';
 export class UserComponent implements OnInit {
   tooltipPositionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right'];
   tooltipPosition = new FormControl(this.tooltipPositionOptions[2]);
-  firestore: Firestore = inject(Firestore);
+  //firestore: Firestore = inject(Firestore);
   users$!: Observable<any>;
   allUsers: Array<any> = [];
+  testFirestore!: AngularFirestoreDocument<any>;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private db: AngularFirestore) {
+    this.testFirestore = this.db.doc('users');
+    console.log(this.testFirestore)
+  }
 
   ngOnInit(): void {
     this.getSavedUsers();
@@ -31,18 +35,14 @@ export class UserComponent implements OnInit {
   }
 
   async getSavedUsers() {
-    //getDocs(collection(firestore, collection-Name)) --holt jedes document aus der gennanten collection.
-    const usersRef = await getDocs(collection(this.firestore, 'users'));
-
-    //mit einer forEach schleife wird durch die oben geholte document-sammlung durch iteriert.
-    //danach wird der inhalt(doc.data()) jedes documents in das Array allUsers gepusht,
-    //und das gerade gepushte document mit der id des jeweiligen documents versehen.
     let i = 0;
-    usersRef.forEach(doc => {
-      this.allUsers.push(doc.data());
-      this.allUsers[i].userId = doc.id;
-      console.log(this.allUsers[i]);
-      i++;
-    });
+
+    // const querySnapshot = await getDocs(collection(this.firestore, "users"));
+    // querySnapshot.forEach((doc) => {
+    //   this.allUsers.push(doc.data());
+    //   this.allUsers[i].userId = doc.id;
+    //   i++
+    // });
+
   }
 }

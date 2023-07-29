@@ -27,10 +27,12 @@
     <div>
         <mat-form-field class="full-width" appearance="outline">
             <mat-label>Birth Date</mat-label>
-            <input [disabled]="loading" [(ngModel)]="birthDate" matInput [matDatepicker]="picker1"
+            <input [disabled]="loading" [max]="maxDate" [(ngModel)]="birthDate" matInput [matDatepicker]="picker"
                 placeholder="Birthdate">
-            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+
+
             <!-- <mat-hint>Please enter a date</mat-hint> -->
         </mat-form-field>
     </div>

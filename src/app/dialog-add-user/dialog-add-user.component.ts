@@ -10,20 +10,26 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogAddUserComponent {
   user = new User();
-  birthDate!: Date;
+  birthDate!: any;
   firestore: Firestore = inject(Firestore);
   loading: boolean = false;
-
-  constructor(public dialogRef: MatDialogRef<DialogAddUserComponent>) { }
+  maxDate: any;
+  constructor(public dialogRef: MatDialogRef<DialogAddUserComponent>) {
+    //this.maxDate = new Date();
+  }
 
   saveUser() {
-    this.user.birthDate = this.birthDate.getTime();
+    if (this.birthDate) {
+      this.user.birthDate = this.birthDate.toLocaleDateString();
+    }
+
     this.loading = true;
     const usersCollection = collection(this.firestore, 'users');
     setDoc(doc(usersCollection), this.user.toJSON())
       .then(() => {
         this.loading = false;
         this.dialogRef.close();
+        console.log(this.user)
       });
 
   }
