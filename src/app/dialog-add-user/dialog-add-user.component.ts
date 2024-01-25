@@ -15,7 +15,7 @@ export class DialogAddUserComponent {
   loading: boolean = false;
   maxDate: any;
   constructor(public dialogRef: MatDialogRef<DialogAddUserComponent>) {
-    //this.maxDate = new Date();
+    this.maxDate = new Date();
   }
 
   saveUser() {

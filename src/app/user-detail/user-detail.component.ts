@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { user } from '@angular/fire/auth';
-import { Firestore, collection, collectionData, doc, docData, getDoc, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, deleteDoc, doc, docData, getDoc, getDocs } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/models/user.class';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
@@ -13,13 +13,14 @@ import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-a
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-  userId!: string | null;
+  userId!: any;
   firestore: Firestore = inject(Firestore);
-  items$: any;
   user: User = new User();
+  userRef!: any;
 
   constructor(private route: ActivatedRoute
-    , public dialog: MatDialog) { }
+    , public dialog: MatDialog, private router: Router) {
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -29,20 +30,30 @@ export class UserDetailComponent implements OnInit {
   }
 
   async getUser() {
-    const usersRef = await getDocs(collection(this.firestore, 'users'));
+    let docSnapshot = await getDoc(doc(this.firestore, 'users', this.userId));
+    this.user = new User(docSnapshot.data())
+    // const usersRef = await getDocs(collection(this.firestore, 'users'))
+    // usersRef.forEach(doc => {
+    // if (doc.id == this.userId) {
+    // this.user = new User(doc.data());
+    // return;
+    // }
+    // });
 
-    usersRef.forEach(doc => {
-      if (doc.id == this.userId) {
-        this.user = new User(doc.data());
-        return;
-      }
-    });
+  }
+
+  async deleteUser() {
+    await deleteDoc(doc(this.firestore, 'users', this.userId));
+    this.router.navigateByUrl('/user');
   }
 
   editUserDetail() {
     let dialog = this.dialog.open(DialogEditUserComponent);
     dialog.componentInstance.user = new User(this.user);
     dialog.componentInstance.userId = this.userId;
+    dialog.afterClosed().subscribe(() => {
+      this.getUser();
+    })
 
   }
 
@@ -50,5 +61,8 @@ export class UserDetailComponent implements OnInit {
     let dialog = this.dialog.open(DialogEditAddressComponent);
     dialog.componentInstance.user = new User(this.user);
     dialog.componentInstance.userId = this.userId;
+    dialog.afterClosed().subscribe(() => {
+      this.getUser();
+    })
   }
 }

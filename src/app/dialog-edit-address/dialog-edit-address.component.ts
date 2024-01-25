@@ -16,9 +16,9 @@ export class DialogEditAddressComponent {
   constructor(public dialogRef: MatDialogRef<DialogEditAddressComponent>) { }
 
   async saveUser() {
-    this.loading = true;
-    const docRef = doc(this.firestore, 'users', this.userId);
 
+    this.loading = true;
+    const docRef = doc(this.firestore, 'users', this.userId)
     setDoc(docRef, this.user.toJSON(), { merge: true })
       .then(() => {
         this.loading = false;

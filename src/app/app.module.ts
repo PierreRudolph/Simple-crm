@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';

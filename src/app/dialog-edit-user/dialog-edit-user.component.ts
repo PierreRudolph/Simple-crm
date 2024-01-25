@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
+import { User } from 'src/models/user.class';
+import { UserDetailComponent } from '../user-detail/user-detail.component';
 
 @Component({
   selector: 'app-dialog-edit-user',
@@ -8,21 +10,28 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./dialog-edit-user.component.scss']
 })
 export class DialogEditUserComponent {
-  user!: any;
+  user!: User;
   userId!: any;
   loading: boolean = false;
   birthDate!: Date;
   firestore: Firestore = inject(Firestore);
 
+  @ViewChild(UserDetailComponent)
+  UserDetailComponent!: UserDetailComponent;
+
   constructor(public dialogRef: MatDialogRef<DialogEditUserComponent>) { }
 
   saveUser() {
-    this.user.birthDate = this.birthDate.getTime();
-    this.loading = true;
-    const docRef = doc(this.firestore, 'users', this.userId);
 
-    setDoc(docRef, this.user.toJSON(), { merge: true })
+    this.loading = true;
+    const docRef = doc(this.firestore, 'users', this.userId)
+    setDoc(docRef, this.user.toJSON(), { merge: false })
       .then(() => {
+        if (this.birthDate) {
+          this.user.birthDate = this.birthDate.toLocaleDateString();
+        }
+        console.log(this.UserDetailComponent)
+
         this.loading = false;
         this.dialogRef.close();
       });
